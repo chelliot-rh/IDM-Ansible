@@ -1,0 +1,8 @@
+---
+- name: Playbook to configure Intial IPA server
+  hosts: ipareplicas
+  roles:
+  - name: Install replica
+    role: freeipa.ansible_freeipa.ipareplica
+    state: "{{ state }}"
+    force: yes

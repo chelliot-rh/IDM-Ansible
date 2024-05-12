@@ -1,0 +1,60 @@
+---
+- name: Playbook to configure Intial IPA server
+  hosts: ipaserver
+
+  vars_files:
+
+
+  pre_tasks:
+
+  tasks:
+    - name: Create read_only privilege
+      freeipa.ansible_freeipa.ipaprivilege:
+        ipaadmin_password: '{{ ipaadmin_password }}'
+        name: 'Read Only'
+        state: present
+
+    - name: Create read_only user
+      freeipa.ansible_freeipa.ipauser:
+        ipaadmin_principal: '{{ ipaadmin_admin }}'
+        ipaadmin_password: '{{ ipaadmin_password }}'
+        uid: read_only
+        sn: Only
+        givenname: Read
+        uidnumber: 10001
+        name: read_only
+        gidnumber: 100
+        telephonenumber: "+555123457"
+        email: 'read_only@{{ ipadomain }}'
+        krbpasswordexpiration: "2025-01-19 23:59:59"
+        password: '{{ ipaadmin_password }}'
+        update_password: on_create
+        loginshell: /bin/false
+        state: present
+
+    - name: Create read_only privilege Permissions
+      freeipa.ansible_freeipa.ipaprivilege:
+        ipaadmin_password: '{{ ipaadmin_password }}'
+        ipaadmin_principal: read_only
+        name: Read Only
+        permission:
+          - "System: Read Permissions"
+          - "System: Read Privileges"
+          - "System: Read Roles"
+        action: privilege
+        state: present
+
+    - name: Create read_only group
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: '{{ ipaadmin_password }}'
+        name: ldap_read_only
+        state: present
+
+    - name: Add read_only user to read_only group
+      community.general.ipa_group:
+        name: sysops
+        user:
+          - ldap_read_only
+        ipa_host: ipaserver-demo.server.lab
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'

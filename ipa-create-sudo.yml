@@ -1,0 +1,26 @@
+---
+- name: Playbook to configure Intial IPA server
+  hosts: ipaserver
+  tasks:
+    - name: Add commands to run in sudo
+      community.general.ipa_sudocmd:
+        name: '{{ item }}'
+        description: Allow to run su via sudo
+        ipa_host: '{{ ipaserver }}'
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'
+      with_items:
+        - /usr/bin/su
+        - /usr/sbin/fdisk
+        - /usr/sbin/ping
+
+    - name: Add sudo commands to sudo group sysadmin
+      freeipa.ansible_freeipa.ipasudocmdgroup:
+        ipaadmin_password: '{{ ipaadmin_password }}'
+        name: sysadmin
+        sudocmd:
+          - /usr/bin/su
+          - /usr/sbin/fdisk
+          - /usr/sbin/ping
+        action: sudocmdgroup
+        state: present

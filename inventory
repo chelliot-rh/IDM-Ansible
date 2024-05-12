@@ -1,0 +1,9 @@
+[ipaserver]
+ipaserver-demo.server.lab
+
+[ipareplicas]
+ipareplica-demo1.server.lab
+ipareplica-demo2.server.lab
+
+[ipaclients]
+ipaclient-demo.server.lab

@@ -1,0 +1,9 @@
+---
+- name: Playbook to configure Intial IPA server
+  hosts: ipaclients 
+  become: true
+  roles:
+  - role: freeipa.ansible_freeipa.ipaclient 
+    state: "{{ state }}"
+    force: yes
+    ipaadmin_password: '{{ ipaadmin_password }}'

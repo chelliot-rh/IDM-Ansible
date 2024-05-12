@@ -1,0 +1,14 @@
+---
+- name: Playbook to configure Intial IPA server
+  hosts: ipaserver
+  vars:
+
+  tasks:
+    - name: Update topology segment
+      freeipa.ansible_freeipa.ipatopologysegment:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        suffix: "{{ suffix }}"
+        left: "{{ left }}"
+        right: "{{ right }}"
+        state: "{{ state }}"
+

@@ -1,0 +1,38 @@
+---
+- name: Playbook to configure Intial IPA server
+  hosts: ipaserver
+  tasks:
+    - name: Set default shell
+      community.general.ipa_config:
+        ipadefaultloginshell: '{{ shell }}'
+        ipa_host: '{{ ipaserver }}'
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'
+
+    - name: Set pwd expire notification
+      community.general.ipa_config:
+        ipapwdexpadvnotify: '{{ pwdexpnotification }}'
+        ipa_host: '{{ ipaserver }}'
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'
+
+    - name: Set search record limits
+      community.general.ipa_config:
+        ipasearchrecordslimit: '{{ recordlength }}'
+        ipa_host: '{{ ipaserver }}'
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'
+
+    - name: Set search time limit
+      community.general.ipa_config:
+        ipasearchtimelimit: '{{ timerecordlength }}'
+        ipa_host: '{{ ipaserver }}'
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'
+
+    - name: Set default home directory
+      community.general.ipa_config:
+        ipahomesrootdir: '{{ home }}'
+        ipa_host: '{{ ipaserver }}'
+        ipa_user: '{{ ipaadmin_admin }}'
+        ipa_pass: '{{ ipaadmin_password }}'
